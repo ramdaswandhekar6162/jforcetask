@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Poll View</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+</head>
+<body>
+    <div class="container mt-5">
+    	<h2 class="text-center mb-4">Poll Details</h2>
+    	<div class= "card">
+    		<div class="card-body">
+    			<h5 class="card-title" th:text="${poll.title}"></h5>
+    			<p class="card-text" th:text="${poll.description}"></p>
+    			<form th:action="@{/leaf/poll/submit/{id} (id=${poll.pollid})}" method="POST">
+    			<div th:each="option : ${poll.option}">
+    				<div class=form-check>
+    					<input class="form-check-input" type="radio" name="language" id="${option}">
+                    	<br>
+    					<label class="form-check-label" th:text="${option}" for={${option}}></label>
+    				</div>
+    			</div>
+    			<button type="submit" class="btn btn-success mt-3">Submit Vote</button>
+    			</form>
+    		</div>
+    	</div>
+    </div>
+     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+</body>
+</html>
+

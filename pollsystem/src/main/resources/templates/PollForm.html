@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Poll</title>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        function addOption() {
+            var optionList = document.getElementById("options-list");
+            var optionCount = optionList.getElementsByTagName("input").length;
+
+            if (optionCount < 10) { // Limit to a maximum of 10 options
+                var newOptionIndex = optionCount;
+                var newOption = document.createElement("input");
+                newOption.type = "text";
+                newOption.name = "option["+newOptionIndex+"]";
+                newOption.placeholder = "Option " + (newOptionIndex + 1);
+                newOption.classList.add("form-control", "mb-2");
+                newOption.setAttribute("onkeyup", "checkAndAddOption()");
+                newOption.setAttribute("th:field", "*{option[" + newOptionIndex + "]}");
+
+                optionList.appendChild(newOption);
+            }
+        }
+
+        function checkAndAddOption() {
+            var optionList = document.getElementById("options-list");
+            var optionCount = optionList.getElementsByTagName("input").length;
+
+            if (optionCount > 1) {
+                var secondLastOption = optionList.getElementsByTagName("input")[optionCount - 2];
+                if (secondLastOption.value !== "") {
+                    addOption();
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">Create a New Poll</h3>
+                        <form th:action="@{/leaf/poll/submit}" th:object="${poll}" method="post">
+                            <div class="form-group mb-3">
+                                <label for="title">Poll Title:</label>
+                                <input type="text" id="title" name="title" th:field="*{title}" class="form-control" placeholder="Enter poll title">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="description">Description:</label>
+                                <textarea id="description" name="description" th:field="*{description}" class="form-control" placeholder="Enter poll description"></textarea>
+                            </div>
+                            <div class="form-group mb-3" id="options-list">
+                                <label for="options">Options:</label>
+                                <input type="text" name="option[0]" th:field="*{option[0]}" class="form-control mb-2" placeholder="Option 1" onkeyup="checkAndAddOption()">
+                                <input type="text" name="option[1]" th:field="*{option[1]}" class="form-control mb-2" placeholder="Option 2" onkeyup="checkAndAddOption()">
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">Create Poll</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
